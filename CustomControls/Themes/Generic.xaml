@@ -1,0 +1,51 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CustomControls">
+
+    <Style TargetType="local:RichPasswordBox">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:RichPasswordBox">
+                    <StackPanel
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <PasswordBox x:Name="PasswordBox" HorizontalAlignment="Stretch" />
+                        <StackPanel
+                            x:Name="ValidationStackPanel"
+                            Padding="5"
+                            HorizontalAlignment="Stretch"
+                            Visibility="Collapsed">
+                            <TextBlock Text="Password must contain the following:" TextWrapping="Wrap" />
+                            <TextBlock
+                                x:Name="LowercaseTextBlock"
+                                Padding="0,5,0,5"
+                                Foreground="Red"
+                                Text="A lowercase letter"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                x:Name="UppercaseTextBlock"
+                                Padding="0,5,0,5"
+                                Foreground="Red"
+                                Text="A uppercase letter"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                x:Name="NumberTextBlock"
+                                Padding="0,5,0,5"
+                                Foreground="Red"
+                                Text="A number"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                x:Name="MinCharsTextBlock"
+                                Padding="0,5,0,5"
+                                Foreground="Red"
+                                Text="Minium 8 charaters"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

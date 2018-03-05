@@ -107,9 +107,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RichPasswordBox.xaml.cs">
-      <DependentUpon>RichPasswordBox.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="RichPasswordBox.cs" />
     <EmbeddedResource Include="Properties\CustomControls.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -118,9 +116,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="RichPasswordBox.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

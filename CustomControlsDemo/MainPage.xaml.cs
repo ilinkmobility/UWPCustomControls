@@ -24,16 +24,28 @@ namespace CustomControlsDemo
     /// </summary>
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
-        bool _validation;
-        public bool Validation
+        bool _validPassword;
+        public bool ValidPassword
         {
-            get { return _validation; }
+            get { return _validPassword; }
             set
             {
-                _validation = value;
-                RaisePropertyChanged("Validation");
+                _validPassword = value;
+                RaisePropertyChanged("ValidPassword");
             }
         }
+
+        string _password;
+        public string Password
+        {
+            get { return _password; }
+            set
+            {
+                _password = value;
+                RaisePropertyChanged("Password");
+            }
+        }
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -42,18 +54,9 @@ namespace CustomControlsDemo
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected void RaisePropertyChanged(string name)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var x = Validation;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }
