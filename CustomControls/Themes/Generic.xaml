@@ -48,4 +48,52 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="local:RichImage">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:RichImage">
+                    <Image
+                        x:Name="image"
+                        Margin="{TemplateBinding Margin}"
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                        CanDrag="True" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="local:ImageContentDialog">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ImageContentDialog">
+                    <Grid
+                        x:Name="grid"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch">
+                        <ScrollViewer
+                            x:Name="scrollViewer"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            HorizontalScrollBarVisibility="Hidden"
+                            Tapped="OnLockRectangleTapped"
+                            VerticalScrollBarVisibility="Hidden">
+                            <Image
+                                x:Name="image"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                ManipulationMode="TranslateX, TranslateY"
+                                Stretch="UniformToFill">
+                                <Image.RenderTransform>
+                                    <CompositeTransform x:Name="compositeTransform" />
+                                </Image.RenderTransform>
+                            </Image>
+                        </ScrollViewer>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

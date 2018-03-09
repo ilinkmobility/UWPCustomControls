@@ -53,6 +53,11 @@ namespace CustomControls
             _minCharsTextBlock = (TextBlock)GetTemplateChild("MinCharsTextBlock");
             if (_minCharsTextBlock == null) throw new NullReferenceException();
 
+            if (!string.IsNullOrEmpty(MinimumCharCountText))
+            {
+                _minCharsTextBlock.Text = MinimumCharCountText;
+            }
+
             _passwordBox.GotFocus += (object sender, RoutedEventArgs e) => _validationStackPanel.Visibility = Visibility.Visible;
 
             _passwordBox.LostFocus += (object sender, RoutedEventArgs e) => _validationStackPanel.Visibility = Visibility.Collapsed;
@@ -112,5 +117,15 @@ namespace CustomControls
         // Using a DependencyProperty as the backing store for MinimumCharCount.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MinimumCharCountProperty =
             DependencyProperty.Register("MinimumCharCount", typeof(int), typeof(RichPasswordBox), new PropertyMetadata(null));
+        
+        public string MinimumCharCountText
+        {
+            get { return (string)GetValue(MinimumCharCountTextProperty); }
+            set { SetValue(MinimumCharCountTextProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MinimumCharCountText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MinimumCharCountTextProperty =
+            DependencyProperty.Register("MinimumCharCountText", typeof(string), typeof(RichPasswordBox), new PropertyMetadata(null));
     }
 }

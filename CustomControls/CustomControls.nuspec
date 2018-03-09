@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>CustomControls.iLinkSystems</id>
+    <version>1.0.0</version>
+    <title>CustomControls</title>
+    <authors>iLink Systems</authors>
+    <owners>iLink Systems</owners>
+    <licenseUrl>https://raw.githubusercontent.com/ilinkmobility/UWPCustomControls/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ilinkmobility/UWPCustomControls</projectUrl>
+    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Reusable UWP UI Custom Controls</description>
+    <releaseNotes>RichPasswordBox UI Control added.</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>UWP Custom Control</tags>
+  </metadata>
+  <files>
+    <!-- WinMd and IntelliSense files -->
+	<file src="bin\x86\Release\CustomControls.dll" target="lib\uap10.0"/>
+	<file src="bin\x86\Release\CustomControls.xr.xml" target="lib\uap10.0"/>
+	
+    <!-- XAML controls -->
+	<file src="Themes\Generic.xaml" target="lib\uap10.0\Themes"/>
+	  
+	<!-- DLLs and resources -->
+	<file src="bin\ARM\Release\CustomControls.dll" target="runtimes\win10-arm\native\"/>
+	<file src="bin\ARM\Release\CustomControls.pri" target="runtimes\win10-arm\native\"/>
+	<file src="bin\ARM\Release\CustomControls.xr.xml" target="runtimes\win10-arm\native\"/>
+	<file src="bin\ARM\Release\CustomControls.dll" target="runtimes\win10-arm\native\CustomControls"/>
+	<file src="bin\ARM\Release\CustomControls.pri" target="runtimes\win10-arm\native\CustomControls"/>
+	<file src="bin\ARM\Release\CustomControls.xr.xml" target="runtimes\win10-arm\native\CustomControls"/>
+	<file src="Themes\Generic.xaml" target="runtimes\win10-arm\native\CustomControls\Themes"/>
+
+	<file src="bin\x64\Release\CustomControls.dll" target="runtimes\win10-x64\native\"/>
+	<file src="bin\x64\Release\CustomControls.pri" target="runtimes\win10-x64\native\"/>
+	<file src="bin\x64\Release\CustomControls.xr.xml" target="runtimes\win10-x64\native\"/>
+	<file src="bin\x64\Release\CustomControls.dll" target="runtimes\win10-x64\native\CustomControls"/>
+	<file src="bin\x64\Release\CustomControls.pri" target="runtimes\win10-x64\native\CustomControls"/>
+	<file src="bin\x64\Release\CustomControls.xr.xml" target="runtimes\win10-x64\native\CustomControls"/>
+	<file src="Themes\Generic.xaml" target="runtimes\win10-x64\native\CustomControls\Themes"/>
+
+	<file src="bin\x86\Release\CustomControls.dll" target="runtimes\win10-x86\native\"/>
+	<file src="bin\x86\Release\CustomControls.pri" target="runtimes\win10-x86\native\"/>
+	<file src="bin\x86\Release\CustomControls.xr.xml" target="runtimes\win10-x86\native\"/>
+	<file src="bin\x86\Release\CustomControls.dll" target="runtimes\win10-x86\native\CustomControls"/>
+	<file src="bin\x86\Release\CustomControls.pri" target="runtimes\win10-x86\native\CustomControls"/>
+	<file src="bin\x86\Release\CustomControls.xr.xml" target="runtimes\win10-x86\native\CustomControls"/>
+	<file src="Themes\Generic.xaml" target="runtimes\win10-x86\native\CustomControls\Themes"/>
+  </files>
+</package>
