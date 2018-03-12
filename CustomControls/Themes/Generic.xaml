@@ -90,6 +90,14 @@
                                 </Image.RenderTransform>
                             </Image>
                         </ScrollViewer>
+                        <Grid
+                            x:Name="gridSlider"
+                            Width="50"
+                            Margin="0,20,0,20"
+                            HorizontalAlignment="Right"
+                            Background="Transparent">
+                            <Slider x:Name="slider" Orientation="Vertical" />
+                        </Grid>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
