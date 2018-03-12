@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
-using Windows.Storage.Streams;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Microsoft.Toolkit.Uwp.UI.Animations;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml.Shapes;
+using Windows.UI.Xaml.Media.Animation;
 
 // The Templated Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234235
 
@@ -76,20 +65,18 @@ namespace CustomControls
         const string SLIDER = "slider";
         const string GRIDSLIDER = "gridSlider";
         const string SCROLLVIEWER = "scrollViewer";
+        const string ENTERSTORYBOARD = "enterStoryboard";
+        const string EXITSTORYBOARD = "exitStoryboard";
         const string COMPOSITETRANSFORM = "compositeTransform";
 
         double defaultWidth;
-
-        int defaultX;
-        int defaultY;
-
-        double maxWidth;
-        bool isZoomed;
 
         Image _image;
         Grid _grid;
         Grid _gridSlider;
         Slider _slider;
+        Storyboard _enterStoryboard;
+        Storyboard _exitStoryboard;
         ScrollViewer _scrollViewer;
         Rectangle _lockRectangle;
         CompositeTransform _compositeTransform;
@@ -102,7 +89,7 @@ namespace CustomControls
             set { SetValue(SourceProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Source.  This enables animation, styling, binding, etc...
+        // Using a DependencyProperty as the backing store for Source.This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SourceProperty =
             DependencyProperty.Register("Source", typeof(ImageSource), typeof(ImageContentDialog), new PropertyMetadata(0));
         
@@ -115,7 +102,6 @@ namespace CustomControls
 
         protected override void OnApplyTemplate()
         {
-            // this is here by default
             base.OnApplyTemplate();
 
             _grid = (Grid)GetTemplateChild(GRID);
@@ -130,6 +116,12 @@ namespace CustomControls
             _slider = (Slider)GetTemplateChild(SLIDER);
             if (_slider == null) throw new NullReferenceException();
 
+            _enterStoryboard = (Storyboard)GetTemplateChild(ENTERSTORYBOARD);
+            if (_enterStoryboard == null) throw new NullReferenceException();
+
+            _exitStoryboard = (Storyboard)GetTemplateChild(EXITSTORYBOARD);
+            if (_exitStoryboard == null) throw new NullReferenceException();
+
             _scrollViewer = (ScrollViewer)GetTemplateChild(SCROLLVIEWER);
             if (_scrollViewer == null) throw new NullReferenceException();
 
@@ -139,8 +131,8 @@ namespace CustomControls
             _image.Source = Source;
             _image.Width = defaultWidth;
 
-            _slider.Minimum = defaultWidth;
-            _slider.Maximum = Window.Current.Bounds.Width;
+            _slider.Minimum = 1;
+            _slider.Maximum = 100;
 
             _grid.Width = Window.Current.Bounds.Width;
             _grid.Height = Window.Current.Bounds.Height;
@@ -163,64 +155,48 @@ namespace CustomControls
 
             _image.DoubleTapped += (object sender, DoubleTappedRoutedEventArgs e) =>
             {
-                if (isZoomed)
-                {
-                    _image.Width = defaultWidth;
-                    _compositeTransform.TranslateX = _compositeTransform.TranslateY = 0;
-                    _slider.Value = defaultWidth;
-                    isZoomed = false;
-                }
+                if (Math.Round(_scrollViewer.ZoomFactor, 1) <= 1)
+                { _slider.Value = 100; }
                 else
-                {
-                    if (maxWidth == 0)
-                    {
-                        maxWidth = Window.Current.Bounds.Width;
-                    }
+                { _slider.Value = 1; }
 
-                    _slider.Value = maxWidth;
-                    isZoomed = true;
-                }
+                OnZoomUpdate();
             };
 
             _slider.ValueChanged += (object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e) =>
             {
-                if (sender is Slider slider)
-                {
-                    _image.Width = slider.Value;
-
-                    if (slider.Value > defaultWidth)
-                    {
-                        isZoomed = true;
-                    }
-                }
+                OnZoomUpdate();                
             };
 
-            _gridSlider.PointerEntered += (object sender, PointerRoutedEventArgs e) => _slider.Visibility = Visibility.Visible;
+            _gridSlider.PointerEntered += (object sender, PointerRoutedEventArgs e) => _enterStoryboard.Begin();
 
-            _gridSlider.PointerExited += (object sender, PointerRoutedEventArgs e) => _slider.Visibility = Visibility.Collapsed;
+            _gridSlider.PointerExited += (object sender, PointerRoutedEventArgs e) => _exitStoryboard.Begin();
 
-            _scrollViewer.Tapped += OnLockRectangleTapped;
-
-            // get all open popups
-            // normally there are 2 popups, one for your ContentDialog and one for Rectangle
-            var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
-            foreach (var popup in popups)
-            {
-                if (popup.Child is Rectangle)
-                {
-                    // I store a refrence to Rectangle to be able to unregester event handler later
-                    _lockRectangle = popup.Child as Rectangle;
-                    _lockRectangle.Opacity = 0.5f;
-                    _lockRectangle.Fill = new SolidColorBrush(Colors.Black);
-                    _lockRectangle.Tapped += OnLockRectangleTapped;
-                }
-            }
+            _scrollViewer.Tapped += OnLockRectangleTapped;        
         }
 
+        /// <summary>
+        /// To zoom in and out using slider.
+        /// </summary>
+        void OnZoomUpdate()
+        {
+            Windows.System.Threading.ThreadPoolTimer.CreateTimer(async (source) =>
+            {
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    _scrollViewer.ChangeView(_scrollViewer.HorizontalOffset * 2, _scrollViewer.VerticalOffset * 2, (float?)(1 + (_slider.Value / 100)));
+                });
+            }, TimeSpan.FromMilliseconds(10));
+        }
+
+        /// <summary>
+        /// To hide the background rectangle.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void OnLockRectangleTapped(object sender, TappedRoutedEventArgs e)
         {
             Hide();
-            _lockRectangle.Tapped -= OnLockRectangleTapped;
         }
     }
 }

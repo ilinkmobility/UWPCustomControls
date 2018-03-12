@@ -72,6 +72,9 @@
                         x:Name="grid"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch">
+                        <Grid.Background>
+                            <SolidColorBrush Opacity="0.7" Color="Gray"/>
+                        </Grid.Background>
                         <ScrollViewer
                             x:Name="scrollViewer"
                             HorizontalAlignment="Stretch"
@@ -96,6 +99,14 @@
                             Margin="0,20,0,20"
                             HorizontalAlignment="Right"
                             Background="Transparent">
+                            <Grid.Resources>
+                                <Storyboard x:Name="exitStoryboard">
+                                    <FadeOutThemeAnimation Storyboard.TargetName="slider" Duration="00:00:00.5" />
+                                </Storyboard>
+                                <Storyboard x:Name="enterStoryboard">
+                                    <FadeInThemeAnimation Storyboard.TargetName="slider" Duration="00:00:00.5" />
+                                </Storyboard>
+                            </Grid.Resources>
                             <Slider x:Name="slider" Orientation="Vertical" />
                         </Grid>
                     </Grid>
