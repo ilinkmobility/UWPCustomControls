@@ -86,7 +86,8 @@
                                 x:Name="image"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                ManipulationMode="TranslateX, TranslateY"
+                                PointerWheelChanged="image_PointerWheelChanged"
+                                ManipulationMode="TranslateX,TranslateY,Scale"                               
                                 Stretch="UniformToFill">
                                 <Image.RenderTransform>
                                     <CompositeTransform x:Name="compositeTransform" />

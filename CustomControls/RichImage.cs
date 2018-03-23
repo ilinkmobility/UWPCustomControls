@@ -78,7 +78,6 @@ namespace CustomControls
         Storyboard _enterStoryboard;
         Storyboard _exitStoryboard;
         ScrollViewer _scrollViewer;
-        Rectangle _lockRectangle;
         CompositeTransform _compositeTransform;
 
         public bool HasZoomSlider { get; set; }
@@ -163,6 +162,8 @@ namespace CustomControls
                 OnZoomUpdate();
             };
 
+            _image.PointerWheelChanged += image_PointerWheelChanged;
+
             _slider.ValueChanged += (object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e) =>
             {
                 OnZoomUpdate();                
@@ -197,6 +198,51 @@ namespace CustomControls
         void OnLockRectangleTapped(object sender, TappedRoutedEventArgs e)
         {
             Hide();
+        }
+
+        private void image_PointerWheelChanged(object sender, PointerRoutedEventArgs e)
+        {
+            double dblDelta_Scroll = -1 * e.GetCurrentPoint(_image).Properties.MouseWheelDelta; // * + - 120 Mouse
+            double posX = e.GetCurrentPoint(_image).Position.X;
+            double posY = e.GetCurrentPoint(_image).Position.Y;
+            double actWidth = _image.ActualWidth;  // * pixel of real image
+            double actHeight = _image.ActualHeight; // * pixel of real image
+
+            dblDelta_Scroll = (dblDelta_Scroll > 0) ? 0.8 : 1.2;
+
+            if (dblDelta_Scroll == 1.2)
+            {
+                if (_slider.Value != 100)
+                {
+                    MouseWheel(dblDelta_Scroll, posX, posY);
+                    _slider.Value = _slider.Value + 20;
+                }
+            }
+            else
+            {
+                if (_slider.Value != 1)
+                {
+                    MouseWheel(dblDelta_Scroll, posX, posY);
+                    _slider.Value = _slider.Value - 20;
+                }
+            }
+        }
+
+        private void MouseWheel(double dblDelta_Scroll, double posX, double posY)
+        {
+            double new_ScaleX = _compositeTransform.ScaleX * dblDelta_Scroll;
+            double new_ScaleY = _compositeTransform.ScaleY * dblDelta_Scroll;
+
+
+            double new_TranslateX = (dblDelta_Scroll > 1) ? (_compositeTransform.TranslateX - (posX * 0.2 * _compositeTransform.ScaleX)) : (_compositeTransform.TranslateX - (posX * -0.2 * _compositeTransform.ScaleX));
+            double new_TranslateY = (dblDelta_Scroll > 1) ? (_compositeTransform.TranslateY - (posY * 0.2 * _compositeTransform.ScaleY)) : (_compositeTransform.TranslateY - (posY * -0.2 * _compositeTransform.ScaleY));
+
+            if (new_ScaleX <= 1 | new_ScaleY <= 1) { new_ScaleX = 1; new_ScaleY = 1; new_TranslateX = 0; new_TranslateY = 0; }
+
+            _compositeTransform.ScaleX = new_ScaleX;
+            _compositeTransform.ScaleY = new_ScaleY;
+            _compositeTransform.TranslateX = new_TranslateX;
+            _compositeTransform.TranslateY = new_TranslateY;
         }
     }
 }

@@ -17,6 +17,7 @@
             <control:RichPasswordBox
                 IsValidPassword="{Binding ValidPassword, Mode=TwoWay}"
                 MinimumCharCountText="Minimum 4 characters"
+                MinimumCharCount="4"
                 Password="{Binding Password, Mode=TwoWay}" />
             <Button
                 Margin="0,10,0,0"
