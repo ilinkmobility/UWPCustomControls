@@ -17,15 +17,15 @@
             <control:RichPasswordBox
                 IsValidPassword="{Binding ValidPassword, Mode=TwoWay}"
                 MinimumCharCountText="Minimum 4 characters"
-                MinimumCharCount="4"
                 Password="{Binding Password, Mode=TwoWay}" />
             <Button
-                Margin="0,10,0,0"
+                Margin="0,10,0,20"
                 HorizontalAlignment="Stretch"
                 Content="Sign In" />
             <control:RichImage
                 Padding="20"
-                HasZoomSlider="True"
+                Background="Red"
+                BackgroundOpacity="0.5"
                 Source="Assets/Mount.png" />
         </StackPanel>
     </Grid>
