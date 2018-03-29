@@ -68,31 +68,38 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:ImageContentDialog">
-                    <Grid
-                        x:Name="grid"
+                                
+                        <Grid x:Name="grid"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Background="{TemplateBinding Background}">
-                        <ScrollViewer
+                    
+                           <ScrollViewer ZoomMode="Enabled"
                             x:Name="scrollViewer"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             HorizontalScrollBarVisibility="Hidden"
                             Tapped="OnLockRectangleTapped"
                             VerticalScrollBarVisibility="Hidden">
-                            <Image
+                                <Image
                                 x:Name="image"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                ManipulationMode="TranslateX, TranslateY"
-                                Stretch="UniformToFill">
+                                ManipulationMode="TranslateX, TranslateY, Scale, Rotate"
+                                ManipulationDelta="Image_OnManipulationDelta"
+                                Stretch="UniformToFill"
+                                RenderTransformOrigin=".5,.5">                                
                                 <Image.RenderTransform>
-                                    <CompositeTransform x:Name="compositeTransform" />
+                                    <TransformGroup>
+                                        <ScaleTransform x:Name="scaleTransform" />
+                                        <RotateTransform x:Name="rotateTransform" />
+                                        <CompositeTransform x:Name="compositeTransform" />
+                                    </TransformGroup>
                                 </Image.RenderTransform>
                             </Image>
                         </ScrollViewer>
-                        <Grid
-                            x:Name="gridSlider"
+                        
+                        <Grid x:Name="gridSlider"
                             Width="50"
                             Margin="0,20,0,20"
                             HorizontalAlignment="Right"
@@ -100,6 +107,7 @@
                             <Slider x:Name="slider" Orientation="Vertical" />
                         </Grid>
                     </Grid>
+                                   
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

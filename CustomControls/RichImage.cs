@@ -7,6 +7,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using Windows.UI.Xaml.Media.Animation;
+using Windows.System.Profile;
+using Windows.Foundation;
 
 // The Templated Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234235
 
@@ -97,6 +99,8 @@ namespace CustomControls
         const string GRIDSLIDER = "gridSlider";
         const string SCROLLVIEWER = "scrollViewer";
         const string COMPOSITETRANSFORM = "compositeTransform";
+        const string SCALETRANSFORM = "scaleTransform";
+        const string ROTATETRANSFORM = "rotateTransform";
 
         double defaultWidth;
 
@@ -110,6 +114,8 @@ namespace CustomControls
         ScrollViewer _scrollViewer;
         Rectangle _lockRectangle;
         CompositeTransform _compositeTransform;
+        ScaleTransform _scaleTransform;
+        RotateTransform _rotateTransform;
 
         public double ZoomDuration { get; set; }
 
@@ -123,15 +129,15 @@ namespace CustomControls
 
         public ImageContentDialog()
         {
-            this.DefaultStyleKey = typeof(ImageContentDialog);
+            DefaultStyleKey = typeof(ImageContentDialog);
 
-            defaultWidth = Window.Current.Bounds.Width / 2;
+            defaultWidth = Window.Current.Bounds.Width/2;
         }
 
         protected override void OnApplyTemplate()
         {
             // this is here by default
-            base.OnApplyTemplate();
+            base.OnApplyTemplate();        
 
             _grid = (Grid)GetTemplateChild(GRID);
             if (_grid == null) throw new NullReferenceException();
@@ -146,10 +152,16 @@ namespace CustomControls
             if (_slider == null) throw new NullReferenceException();
 
             _scrollViewer = (ScrollViewer)GetTemplateChild(SCROLLVIEWER);
-            if (_scrollViewer == null) throw new NullReferenceException();
+            if (_scrollViewer == null) throw new NullReferenceException();            
 
             _compositeTransform = (CompositeTransform)GetTemplateChild(COMPOSITETRANSFORM);
             if (_compositeTransform == null) throw new NullReferenceException();
+
+            _scaleTransform = (ScaleTransform)GetTemplateChild(SCALETRANSFORM);
+            if (_scaleTransform == null) throw new NullReferenceException();
+
+            _rotateTransform = (RotateTransform)GetTemplateChild(ROTATETRANSFORM);
+            if (_rotateTransform == null) throw new NullReferenceException();
 
             _image.Source = Source;
             _image.Width = defaultWidth;
@@ -162,9 +174,16 @@ namespace CustomControls
 
             _gridSlider.Visibility = (HasZoomSlider) ? Visibility.Visible : Visibility.Collapsed;
 
-            //Check for desktop device using mouse input support
-            if (new Windows.Devices.Input.MouseCapabilities().MousePresent == 0)
+            //Check for desktop device using mouse input support.
+            string platformFamily = AnalyticsInfo.VersionInfo.DeviceFamily;
+            if (platformFamily.Equals("Windows.Desktop"))
             {
+                //For desktop.
+                _gridSlider.Visibility = Visibility.Visible;
+            }
+            else if (platformFamily.Equals("Windows.Mobile"))
+            {
+                //For mobile.
                 _gridSlider.Visibility = Visibility.Collapsed;
             }
 
@@ -216,6 +235,8 @@ namespace CustomControls
 
             _scrollViewer.Tapped += OnLockRectangleTapped;
 
+            _image.ManipulationDelta += Image_OnManipulationDelta;
+
             // get all open popups
             // normally there are 2 popups, one for your ContentDialog and one for Rectangle
             var popups = VisualTreeHelper.GetOpenPopups(Window.Current);
@@ -231,6 +252,24 @@ namespace CustomControls
                 }
             }
         }
+
+        void Image_OnManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            FrameworkElement origin = sender as FrameworkElement;
+            FrameworkElement parent = origin.Parent as FrameworkElement;
+
+            var localCoords = e.Position;
+            var relativeTransform = origin.TransformToVisual(parent);
+            Point parentContainerCoords = relativeTransform.TransformPoint(localCoords);
+            var center = parentContainerCoords;
+          
+            //Rotate.
+            _rotateTransform.Angle += e.Delta.Rotation;
+            
+            //zoom.
+            _scaleTransform.ScaleX *= e.Delta.Scale;
+            _scaleTransform.ScaleY *= e.Delta.Scale;
+        }        
 
         async void DoZoom(double to)
         {
