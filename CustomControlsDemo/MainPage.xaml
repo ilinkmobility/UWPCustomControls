@@ -4,19 +4,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:control="using:CustomControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:CustomControlsDemo"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Margin="30"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel Width="250" HorizontalAlignment="Center">
-            <TextBlock Text="Username" />
-            <TextBox HorizontalAlignment="Stretch" />
-            <TextBlock Margin="0,10,0,0" Text="Password" />
+        <StackPanel Width="250">
+            <TextBlock Text="Username"/>
+            <TextBox HorizontalAlignment="Stretch"/>
+            <TextBlock Margin="0,10,0,0" Text="Password"/>
             <control:RichPasswordBox
                 IsValidPassword="{Binding ValidPassword, Mode=TwoWay}"
                 MinimumCharCountText="Minimum 4 characters"
+                MinimumCharCount="4"
                 Password="{Binding Password, Mode=TwoWay}" />
             <Button
                 Margin="0,10,0,20"

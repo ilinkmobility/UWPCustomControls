@@ -73,15 +73,15 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Background="{TemplateBinding Background}">
-                    
-                           <ScrollViewer ZoomMode="Enabled"
+
+                        <ScrollViewer ZoomMode="Enabled"
                             x:Name="scrollViewer"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             HorizontalScrollBarVisibility="Hidden"
                             Tapped="OnLockRectangleTapped"
                             VerticalScrollBarVisibility="Hidden">
-                                <Image
+                            <Image
                                 x:Name="image"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -90,8 +90,8 @@
                                 Stretch="UniformToFill"
                                 RenderTransformOrigin=".5,.5">                                
                                 <Image.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform x:Name="scaleTransform" />
+                                    <TransformGroup x:Name="transformGroup">
+                                        <ScaleTransform x:Name="scaleTransform"/>
                                         <RotateTransform x:Name="rotateTransform" />
                                         <CompositeTransform x:Name="compositeTransform" />
                                     </TransformGroup>
@@ -106,6 +106,47 @@
                             Background="Transparent">
                             <Slider x:Name="slider" Orientation="Vertical" />
                         </Grid>
+                        <StackPanel x:Name="Options" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">
+                            <!--FLIP-->
+                            <Grid x:Name="Flip">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="20"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="20"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+                                <StackPanel Grid.Row="0" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+                                <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+                                <StackPanel Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+                                <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="DarkGray"/>
+                                <StackPanel x:Name="FlipXLeft" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Background="DarkGray" ToolTipService.ToolTip="Flip Left">
+                                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE938;" Foreground="white"></TextBlock>
+                                </StackPanel>
+                                <StackPanel x:Name="FlipXRight" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Background="DarkGray" ToolTipService.ToolTip="Flip Right">
+                                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Segoe MDL2 Assets" Text="&#xE937;" Foreground="white"></TextBlock>
+                                </StackPanel>
+                                <StackPanel x:Name="FlipYTop" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="DarkGray" ToolTipService.ToolTip="Flip Up">
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" FontFamily="Segoe MDL2 Assets" Text="&#xE935;" Foreground="white"></TextBlock>
+                                </StackPanel>
+                                <StackPanel x:Name="FlipYBottom" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="DarkGray" ToolTipService.ToolTip="Flip Down">
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Segoe MDL2 Assets" Text="&#xE936;" Foreground="white"></TextBlock>
+                                </StackPanel>
+                            </Grid>
+                            <!--ROTATE-->
+                            <StackPanel x:Name="Rotate" Orientation="Vertical" Margin="6,0,6,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel x:Name="Rotateleft" Width="40" Height="18" Background="DarkGray" Margin="0,0,0,2" ToolTipService.ToolTip="Rotate Anti-Clockwise" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE80C;" Foreground="white" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                                </StackPanel>
+                                <StackPanel x:Name="Rotateright" Width="40" Height="18" Background="DarkGray" Margin="0,2,0,0" ToolTipService.ToolTip="Rotate Clockwise" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE80D;" Foreground="white" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
                     </Grid>
                                    
                 </ControlTemplate>
